@@ -30,7 +30,7 @@ def get_person(person_id: int, db: Session = Depends(get_db)):
     return person
 
 
-@app.post("/api/v1/persons", status_code=status.HTTP_201_CREATED)
+@app.post("/api/v1/persons", status_code=status.HTTP_201_CREATED, response_model=schemas.PersonResponse)
 def create_person(person: schemas.PersonRequest, response: Response, db: Session = Depends(get_db)):
     db_person = models.Person(**person.model_dump())
     db.add(db_person)
@@ -38,7 +38,7 @@ def create_person(person: schemas.PersonRequest, response: Response, db: Session
     db.refresh(db_person)
 
     response.headers["Location"] = f"/api/v1/persons/{db_person.id}"
-    return None
+    return db_person
 
 
 @app.patch("/api/v1/persons/{person_id}", response_model=schemas.PersonResponse)
