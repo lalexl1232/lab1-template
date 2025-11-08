@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: person-service
+    env: docker
+    region: oregon
+    plan: free
+    branch: master
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: persons-db
+          property: connectionString
+
+databases:
+  - name: persons-db
+    databaseName: persons
+    user: program
+    region: oregon
+    plan: free
