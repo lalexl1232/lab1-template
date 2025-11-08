@@ -40,7 +40,6 @@ def create_person(person: schemas.PersonRequest, response: Response, db: Session
     response.headers["Location"] = f"/api/v1/persons/{db_person.id}"
     return db_person
 
-
 @app.patch("/api/v1/persons/{person_id}", response_model=schemas.PersonResponse)
 def update_person(person_id: int, person: schemas.PersonRequest, db: Session = Depends(get_db)):
     db_person = db.query(models.Person).filter(models.Person.id == person_id).first()
